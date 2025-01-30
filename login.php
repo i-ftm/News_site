@@ -19,7 +19,7 @@
 </head>
 <body>
 <div class="card " >
-  <div class="card-body d-flex justify-content-around flex-wrap border border-warning-subtle logdiv">
+  <div class="card-body d-flex justify-content-around flex-wrap border  logdiv">
   <h5 class="card-title title" style="color:rgb(64 ,35, 41)">ثبت نام</h5><br>
   <form action="/" method="post">
             <br><label class='mt-2' for="">نام کاربری : </label><br>
@@ -32,40 +32,75 @@
             <?php if(has_error('password')) { ?>
                 <span><?php  echo get_error('password'); ?></span><br>
             <?php  } ?>
-            <label class='labels' for=""> نام :  </label><br>
-            <input type="text" name="name"><br>
-            <?php if(has_error('name')) { ?>
-                <span><?php  echo get_error('name'); ?></span><br>
-            <?php  } ?>
-            <label class='labels' for=""> نام خانوادگی : </label><br>
-            <input type="text" name="family"><br>
-            <?php if(has_error('family')) { ?>
-                <span><?php  echo get_error('family'); ?></span><br>
-            <?php  } ?><br>
             <div class="d-flex justify-content-around " >
-            <button type="submit" class="btn " >ثبت</button>
+            <a href="index.php" type="submit" class="btn">ثبت</a>
             </div>
         </form>
   </div>
 </div>
 
-<!-- <?php
+<?php
 
 function has_error($field) {
     global $errors;
-
     return isset($errors[$field]);
 }
 
 function get_error($field) {
     global $errors;
-
     return has_error($field) ? $errors[$field] : null;
 }
 
 $errors = [];
 
-?> -->
+function request($field) {
+    return isset($_REQUEST[$field]) && $_REQUEST[$field] != "" ? trim($_REQUEST[$field]) : null;
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $username = request('username');
+    $password = request('password');
+
+    if (is_null($username)) {
+        $errors['username'] = 'فیلد نام کاربری نمی‌تواند خالی بماند';
+    }
+
+    if (is_null($password)) {
+        $errors['password'] = 'فیلد پسورد نمی‌تواند خالی بماند';
+    } elseif (strlen($password) < 8) {
+        $errors['password'] = 'فیلد پسورد نمی‌تواند کمتر از 8 کاراکتر باشد';
+    }
+
+    if (!is_null($username) && ! is_null($password) && strlen($password) >= 8 ) {
+        $link = mysqli_connect('localhost:3306', 'root', '');
+        if (!$link) {
+            echo 'could not connect : ' . mysqli_connect_error();
+            exit;
+        }
+
+        mysqli_select_db($link, 'news');
+
+        $statement = mysqli_prepare($link, "insert into users (username, password) values (?, ?)");
+        
+        if (!$statement) {
+            echo 'خطا در آماده‌سازی کوئری: ' . mysqli_error($link);
+            exit;
+        }
+
+        mysqli_stmt_bind_param($statement, 'ssss', $username, $password);
+
+        if (mysqli_stmt_execute($statement)) {
+            echo 'ثبت نام با موفقیت انجام شد.';
+        } else {
+            echo 'خطا در اجرای کوئری: ' . mysqli_error($link);
+        }
+
+        mysqli_stmt_close($statement);
+        mysqli_close($link);
+    }
+}
+
+?>
 
 </body>
 </html>

@@ -31,7 +31,7 @@ body {
 .card-body {
     text-align: right;
 }
-button.btn {
+.btn {
     margin-top: 10px;
     background-color: rgb(135, 49, 78);
     color: white;

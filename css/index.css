@@ -1,0 +1,55 @@
+body, html {
+    margin: 0;
+    padding: 0;
+}
+.navbar {
+    margin-top: 0px !important;
+    position: fixed  !important; /* ثابت کردن navbar */
+    top: 0  !important; 
+    left: 0  !important; 
+    right: 0  !important; 
+    z-index: 1000; /* جلوگیری از هم‌پوشانی با عناصر دیگر */
+}
+.logo img {
+    height: 5.5vh; 
+    width: auto;
+    max-width: 60px; 
+    object-fit: contain; /* تصویر بدون تغییر نسبت، درون عنصر قرار می‌گیرد */
+    border-radius: 50px;
+}
+.nav-item.dropdown {
+    display: flex;
+    align-items: center; 
+}
+.logo {
+    margin-right: 10px; 
+}
+
+.container-fluid {
+    background-color: rgba(118, 60, 80, 0.685) !important;
+    margin-top: 0px !important;
+}
+.sbtn {
+    margin-top: 10px;
+    background-color: #87314e;
+    color: white;
+    width: auto; /* عرض دکمه را بر اساس محتوا تنظیم کنید */
+    height: 5vh;
+    border-radius: 7px;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+body{
+    padding-top: 56px; /* ارتفاع navbar */
+    font-family: 'Raleway', sans-serif;
+}
+.nav-item .nav-link {
+    padding: 0.5rem 1rem; 
+    color: white !important; 
+}
+
+.nav-item .sbtn {
+    margin: 0; 
+}
