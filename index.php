@@ -140,12 +140,12 @@
                   سیاسی
               </h2>
             </div>
-            <div class="option-imgs d-flex flex-wrap justify-content-evenly" style="width: 100%;">
+            <div class="option-imgs d-flex flex-wrap justify-content-evenly p-5" style="width: 100%;">
               <div class="option-img col-12 col-xl-3 mt-5 mb-5">
                   <img src="assets/images/4-1.jpg" alt="">
                   <div class="option-disceription">
                       <h4 class="pt-3 px-2 fs-2 fw-semibold">App 1</h4>
-                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2">Lorem ipsum, dolor sit amet consectetur</p>
+                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2 text-truncate">Lorem ipsum, dolor sit amet consectetur</p>
                       <a class="show-news" href="#">مشاهده خبر</a>
                   </div>
               </div>
@@ -153,7 +153,7 @@
                   <img src="assets/images/4-2.jpg" alt="">
                   <div class="option-disceription">
                       <h4 class="pt-3 px-2 fs-2 fw-semibold">Product 1</h4>
-                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2">Lorem ipsum, dolor sit amet consectetur</p>
+                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2 text-truncate">Lorem ipsum, dolor sit amet consectetur</p>
                       <a class="show-news" href="#">مشاهده خبر</a>
                   </div>
               </div>
@@ -161,7 +161,7 @@
                   <img src="assets/images/4-3.jpg" alt="">
                   <div class="option-disceription">
                       <h4 class="pt-3 px-2 fs-2 fw-semibold">Branding 1</h4>
-                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2">Lorem ipsum, dolor sit amet consectetur</p>
+                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2 text-truncate">Lorem ipsum, dolor sit amet consectetur</p>
                       <a class="show-news" href="#">مشاهده خبر</a>
                   </div>
               </div>
@@ -169,7 +169,7 @@
                   <img src="assets/images/4-4.jpg" alt="">
                   <div class="option-disceription">
                       <h4 class="pt-3 px-2 fs-2 fw-semibold">Books 1</h4>
-                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2">Lorem ipsum, dolor sit amet consectetur</p>
+                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2 text-truncate">Lorem ipsum, dolor sit amet consectetur</p>
                       <a class="show-news" href="#">مشاهده خبر</a>
                   </div>
               </div>
@@ -181,12 +181,12 @@
                   اقتصادی
               </h2>
             </div>
-            <div class="option-imgs d-flex flex-wrap justify-content-evenly" style="width: 100%;">
+            <div class="option-imgs d-flex flex-wrap justify-content-evenly p-5" style="width: 100%;">
               <div class="option-img col-12 col-xl-3 mt-5 mb-5">
                   <img src="assets/images/4-1.jpg" alt="">
                   <div class="option-disceription">
                       <h4 class="pt-3 px-2 fs-2 fw-semibold">App 1</h4>
-                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2">Lorem ipsum, dolor sit amet consectetur</p>
+                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2 text-truncate">Lorem ipsum, dolor sit amet consectetur</p>
                       <a class="show-news" href="#">مشاهده خبر</a>
                   </div>
               </div>
@@ -194,7 +194,7 @@
                   <img src="assets/images/4-2.jpg" alt="">
                   <div class="option-disceription">
                       <h4 class="pt-3 px-2 fs-2 fw-semibold">Product 1</h4>
-                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2">Lorem ipsum, dolor sit amet consectetur</p>
+                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2 text-truncate">Lorem ipsum, dolor sit amet consectetur</p>
                       <a class="show-news" href="#">مشاهده خبر</a>
                   </div>
               </div>
@@ -202,7 +202,7 @@
                   <img src="assets/images/4-3.jpg" alt="">
                   <div class="option-disceription">
                       <h4 class="pt-3 px-2 fs-2 fw-semibold">Branding 1</h4>
-                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2">Lorem ipsum, dolor sit amet consectetur</p>
+                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2 text-truncate">Lorem ipsum, dolor sit amet consectetur</p>
                       <a class="show-news" href="#">مشاهده خبر</a>
                   </div>
               </div>
@@ -210,7 +210,7 @@
                   <img src="assets/images/4-4.jpg" alt="">
                   <div class="option-disceription">
                       <h4 class="pt-3 px-2 fs-2 fw-semibold">Books 1</h4>
-                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2">Lorem ipsum, dolor sit amet consectetur</p>
+                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2 text-truncate">Lorem ipsum, dolor sit amet consectetur</p>
                       <a class="show-news" href="#">مشاهده خبر</a>
                   </div>
               </div>
@@ -222,12 +222,12 @@
                   ورزشی
               </h2>
             </div>
-            <div class="option-imgs d-flex flex-wrap justify-content-evenly" style="width: 100%;">
+            <div class="option-imgs d-flex flex-wrap justify-content-evenly p-5" style="width: 100%;">
               <div class="option-img col-12 col-xl-3 mt-5 mb-5">
                   <img src="assets/images/4-1.jpg" alt="">
                   <div class="option-disceription">
                       <h4 class="pt-3 px-2 fs-2 fw-semibold">App 1</h4>
-                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2">Lorem ipsum, dolor sit amet consectetur</p>
+                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2 text-truncate">Lorem ipsum, dolor sit amet consectetur</p>
                       <a class="show-news" href="#">مشاهده خبر</a>
                   </div>
               </div>
@@ -235,7 +235,7 @@
                   <img src="assets/images/4-2.jpg" alt="">
                   <div class="option-disceription">
                       <h4 class="pt-3 px-2 fs-2 fw-semibold">Product 1</h4>
-                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2">Lorem ipsum, dolor sit amet consectetur</p>
+                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2 text-truncate">Lorem ipsum, dolor sit amet consectetur</p>
                       <a class="show-news" href="#">مشاهده خبر</a>
                   </div>
               </div>
@@ -243,7 +243,7 @@
                   <img src="assets/images/4-3.jpg" alt="">
                   <div class="option-disceription">
                       <h4 class="pt-3 px-2 fs-2 fw-semibold">Branding 1</h4>
-                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2">Lorem ipsum, dolor sit amet consectetur</p>
+                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2 text-truncate">Lorem ipsum, dolor sit amet consectetur</p>
                       <a class="show-news" href="#">مشاهده خبر</a>
                   </div>
               </div>
@@ -251,7 +251,7 @@
                   <img src="assets/images/4-4.jpg" alt="">
                   <div class="option-disceription">
                       <h4 class="pt-3 px-2 fs-2 fw-semibold">Books 1</h4>
-                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2">Lorem ipsum, dolor sit amet consectetur</p>
+                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2 text-truncate">Lorem ipsum, dolor sit amet consectetur</p>
                       <a class="show-news" href="#">مشاهده خبر</a>
                   </div>
               </div>

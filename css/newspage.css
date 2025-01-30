@@ -55,19 +55,7 @@ body{
 .nav-item .sbtn {
     margin: 0; 
 }
-#carouselExampleCaptions{
-    background-color: #e7d2d8 !important;
-    height: 40vh !important ;
-    overflow: hidden;
-}
-.carousel-item {
-    height: 100%; 
-}
-.carousel-item img {
-    height: 100%; 
-    width: 100%;
-    object-fit: cover; 
-}
+
 /* news */
 .title h2 {
     color: #32222c;
@@ -107,6 +95,7 @@ body{
     align-items: center;
     justify-content: center;
 }
+
 /* footer */
 .footer{
     background-color: black;
