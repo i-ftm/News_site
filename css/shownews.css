@@ -1,0 +1,129 @@
+body, html {
+    margin: 0;
+    padding: 0;
+}
+.navbar {
+    margin-top: 0px !important;
+    position: fixed  !important; /* ثابت کردن navbar */
+    top: 0  !important; 
+    left: 0  !important; 
+    right: 0  !important; 
+    z-index: 1000; /* جلوگیری از هم‌پوشانی با عناصر دیگر */
+}
+.logo img {
+    height: 5.5vh; 
+    width: auto;
+    max-width: 60px; 
+    object-fit: contain; /* تصویر بدون تغییر نسبت، درون عنصر قرار می‌گیرد */
+    border-radius: 50px;
+}
+.nav-item.dropdown {
+    display: flex;
+    align-items: center; 
+}
+.logo {
+    margin-right: 10px; 
+}
+
+.container-fluid {
+    background-color: rgba(118, 60, 80, 0.685) !important;
+    margin-top: 0px !important;
+}
+.sbtn {
+    margin-top: 10px;
+    background-color: #87314e;
+    color: white;
+    width: auto; /* عرض دکمه را بر اساس محتوا تنظیم کنید */
+    height: 5vh;
+    border-radius: 7px;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+body{
+    padding-top: 56px; /* ارتفاع navbar */
+    font-family: 'Raleway', sans-serif;
+}
+.nav-item .nav-link {
+    padding: 0.5rem 1rem; 
+    color: white !important; 
+    background-color: #87314e;
+    margin-left: 2px;
+    border-radius: 5px;
+}
+.nav-item .sbtn {
+    margin: 0; 
+}
+
+/* show news */
+.title h2 {
+    color: #32222c;
+    text-transform: uppercase;
+    margin-left: 9%;
+    margin-top: 80px;
+}
+.title h2::after {
+    content: "";
+    width: 90%;
+    height: 3px;
+    display: inline-block;
+    background: #87314e;
+}
+.news {
+    width: 100%; /* عرض کامل */
+    text-align: center; /* مرکز کردن متن */
+}
+
+.news img {
+    width: 50%;
+    height: 40vh;
+    display: block; 
+    margin: 0 auto; 
+}
+
+.news-text {
+    width: 80%; 
+    margin: 20px auto; 
+    text-align: justify; 
+}
+
+
+/* footer */
+.footer{
+    background-color: black;
+    color: white;
+    height: 27vh; 
+    position: relative;
+    bottom: 0;
+    margin-bottom: 0!important;
+    margin-top: auto; 
+}
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+}
+.container {
+    padding: 20px; 
+}
+
+.footer-links {
+    list-style-type: none; 
+    padding: 0; 
+    margin: 10px 0; 
+}
+
+.footer-links li {
+    display: inline; 
+    margin-right: 15px; 
+}
+
+.footer-links a {
+    color: white; 
+    text-decoration: none; 
+}
+
+.footer-links a:hover {
+    color: #d2a0ae; 
+}
