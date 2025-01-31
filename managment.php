@@ -34,6 +34,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_user'])) {
     }
 }
 
+// تغییر وضعیت share خبر
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['toggle_share'])) {
+    $news_id = intval($_POST['news_id']);
+    $new_share_value = $_POST['share'] == 1 ? 0 : 1; // تغییر مقدار share
+
+    $update_query = "UPDATE news SET share = $new_share_value WHERE id = $news_id";
+    if (!mysqli_query($link, $update_query)) {
+        die('خطا در به‌روزرسانی وضعیت share: ' . mysqli_error($link));
+    }
+}
+
 // دریافت همه کاربران
 $users_query = "SELECT * FROM users";
 $users_result = mysqli_query($link, $users_query);
@@ -135,7 +146,7 @@ mysqli_close($link);
                             <a class="nav-link active" aria-current="page" href="#"><i class="bi bi-person-plus"></i></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="index.php">خروج</a> <!-- لینک به صفحه خروج -->
+                            <a class="nav-link" href="index.php">خروج</a> 
                         </li>
                     </ul>
                 </div>
@@ -193,7 +204,7 @@ mysqli_close($link);
                     <tr>
                         <th>شناسه</th>
                         <th>عنوان</th>
-                        <th>متن خبر</th> <!-- اضافه شده -->
+                        <th>متن خبر</th>
                         <th>وضعیت انتشار</th>
                         <th>عملیات</th>
                     </tr>
@@ -203,7 +214,7 @@ mysqli_close($link);
                         <tr>
                             <td><?php echo htmlspecialchars($newsItem['id']); ?></td>
                             <td><?php echo htmlspecialchars($newsItem['title']); ?></td>
-                            <td><?php echo htmlspecialchars($newsItem['newstext']); ?></td> <!-- اضافه شده -->
+                            <td><?php echo htmlspecialchars($newsItem['newstext']); ?></td>
                             <td><?php echo $newsItem['share'] == 1 ? 'منتشر شده' : 'غیرفعال'; ?></td>
                             <td>
                                 <form action="managment.php" method="post" style="display:inline;">
