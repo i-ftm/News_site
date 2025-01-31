@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($user['isadmin'] == 1) {
                 header("Location: managment.php");
             } else {
-                header("Location: addnews.php");
+                header("Location: user.php");
             }
             exit;
         } else {

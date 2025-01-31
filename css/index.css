@@ -4,7 +4,7 @@ body, html {
 }
 .navbar {
     margin-top: 0px !important;
-    position: fixed  !important; /* ثابت کردن navbar */
+    position: fixed  !important; 
     top: 0  !important; 
     left: 0  !important; 
     right: 0  !important; 
@@ -31,8 +31,9 @@ body, html {
 }
 .sbtn {
     margin-top: 10px;
-    background-color: #87314e;
-    color: white;
+    background-color: #87314e !important;
+    color: white !important;
+    
     width: auto; /* عرض دکمه را بر اساس محتوا تنظیم کنید */
     height: 5vh;
     border-radius: 7px;
@@ -75,6 +76,7 @@ body{
     margin-left: 9%;
     margin-top: 80px;
 }
+
 .title h2::after {
     content: "";
     width: 90%;
@@ -82,32 +84,53 @@ body{
     display: inline-block;
     background: #87314e;
 }
-.title-news h2 {
+
+
+.title-news h5 {
     color: #685b67;
     text-transform: uppercase;
     margin-left: 9%;
-    margin-top: 80px;
+    margin-top: 20px;
 }
-.title-news h2::after {
+
+.title-news h5::after {
     content: "";
     width: 90%;
-    height: 3px;
+    height: 2px;
     display: inline-block;
     background: #957781;
 }
-.show-news{
+.card {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* ارتفاع کارت‌ها یکسان */
+}
+
+.card-img-top {
+    flex-grow: 1; 
+    object-fit: cover; 
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* محتوای کارت ارتفاع متناسب با کارت داشته باشد */
+}
+
+.show-news {
     background-color: #87314e;
     color: white;
-    width: 75%; 
+    width: 75%;
     height: 5vh;
-    border-radius: 7px; 
-    text-decoration: none; 
+    border-radius: 7px;
+    text-decoration: none;
     padding: 0.5rem 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: 0 auto; /* مرکز کردن دکمه */
+    margin-top: auto; /* دکمه در پایین کارت قرار گیرد */
 }
-/* footer */
 /* footer */
 .footer {
     background-color: black;

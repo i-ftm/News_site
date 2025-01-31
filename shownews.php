@@ -13,8 +13,13 @@ if ($id <= 0) {
     die('شناسه خبر نامعتبر است.');
 }
 
-// خواندن خبر از جدول news
-$query = "SELECT * FROM news WHERE id = $id";
+// خواندن خبر از جدول news و اطلاعات کاربر از جدول users
+$query = "
+    SELECT n.*, u.name, u.family 
+    FROM news n
+    JOIN users u ON n.user_id = u.id
+    WHERE n.id = $id
+";
 $result = mysqli_query($link, $query);
 
 if (!$result) {
@@ -28,7 +33,7 @@ if (mysqli_num_rows($result) == 0) {
 $newsItem = mysqli_fetch_assoc($result);
 mysqli_close($link);
 
-// تبدیل مسیر تصویر به مسیر کامل
+// تبدیل مسیر نسبی تصویر به URL کامل
 $baseUrl = "http://localhost/your-project-folder/"; // آدرس پایه پروژه
 $imagePath = $baseUrl . $newsItem['image'];
 ?>
@@ -59,7 +64,9 @@ $imagePath = $baseUrl . $newsItem['image'];
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
                 <li class="nav-item dropdown d-flex align-items-center">
-                    <i class="logo"><img src="images/5.png" alt="لوگو"></i>
+                    <a href="index.php" class="logo">
+                        <img src="images/5.png" alt="لوگو">
+                    </a>
                     <a class="nav-link dropdown-toggle m-1 fs-6" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                       اخبار
                     </a>
@@ -73,8 +80,8 @@ $imagePath = $baseUrl . $newsItem['image'];
                       <li><a class="dropdown-item" href="index.php?category=اقتصادی">اقتصادی</a></li>
                     </ul>
                 </li>
-                <form class="d-flex align-items-center" role="search">
-                    <input class="form-control p-2" type="search" placeholder="جست و جو" aria-label="Search" style="height: 5vh;">
+                <form class="d-flex align-items-center" role="search" action="index.php" method="get">
+                    <input class="form-control p-2" type="search" name="search" placeholder="جست و جو" aria-label="Search" style="height: 5vh;">
                     <button class="sbtn p-2 m-2" type="submit"><i class="bi bi-search"></i></button>
                 </form>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -83,10 +90,10 @@ $imagePath = $baseUrl . $newsItem['image'];
                             <a class="nav-link active" aria-current="page" href="#"><i class="bi bi-person-plus"></i></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">ورود</a>
+                            <a class="nav-link" href="login.php">ورود</a> <!-- لینک به صفحه ورود -->
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">ثبت نام</a>
+                            <a class="nav-link" href="registration.php">ثبت نام</a> <!-- لینک به صفحه ثبت‌نام -->
                         </li>
                     </ul>
                 </div>
@@ -94,15 +101,21 @@ $imagePath = $baseUrl . $newsItem['image'];
         </nav>
 
         <!-- نمایش کامل خبر -->
-        <div class="container mt-4">
-            <h2 class="text-center mb-4"><?php echo htmlspecialchars($newsItem['title']); ?></h2>
-            <div class="row">
-                <div class="col-md-8 offset-md-2">
-                    <img src="<?php echo htmlspecialchars($imagePath); ?>" class="img-fluid mb-4" alt="<?php echo htmlspecialchars($newsItem['title']); ?>">
-                    <p class="news-text"><?php echo nl2br(htmlspecialchars($newsItem['newstext'])); ?></p>
-                </div>
+    <div class="container news mt-4">
+        <h2 class="mb-4 title"><?php echo htmlspecialchars($newsItem['title']); ?></h2>
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <?php if (!empty($newsItem['image'])): ?>
+                    <img src="<?php echo htmlspecialchars($newsItem['image']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($newsItem['title']); ?>">
+                <?php else: ?>
+                    <p class="text-muted">تصویری برای این خبر وجود ندارد.</p>
+                <?php endif; ?>
+                <p class="news-text"><?php echo nl2br(htmlspecialchars($newsItem['newstext'])); ?></p>
+                <p class="text-muted">زمان انتشار: <?php echo htmlspecialchars($newsItem['created_at']); ?></p>
+                <p class="text-muted">نویسنده: <?php echo htmlspecialchars($newsItem['name'] . ' ' . $newsItem['family']); ?></p>
             </div>
         </div>
+    </div>
 
     <!-- footer -->
     <div class="footer w-100">
@@ -123,3 +136,4 @@ $imagePath = $baseUrl . $newsItem['image'];
       </div>
     </div>
 </body>
+</html>

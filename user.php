@@ -1,30 +1,18 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit();
+}
 
 $link = mysqli_connect('localhost:3306', 'root', '', 'news');
 if (!$link) {
     die('خطا در اتصال به پایگاه داده: ' . mysqli_connect_error());
 }
 
-
-$category = isset($_GET['category']) ? $_GET['category'] : 'همه'; 
-$category = mysqli_real_escape_string($link, $category); 
-
-
-$search = isset($_GET['search']) ? $_GET['search'] : ''; 
-$search = mysqli_real_escape_string($link, $search); 
-
-
-if ($category === 'همه') {
-    $query = "SELECT * FROM news WHERE share = 1"; 
-} else {
-    $query = "SELECT * FROM news WHERE category = '$category' AND share = 1"; 
-}
-
-
-if (!empty($search)) {
-    $query .= " AND title LIKE '%$search%'";
-}
-
+$user_id = $_SESSION['user_id'];
+$query = "SELECT * FROM news WHERE user_id = $user_id";
 $result = mysqli_query($link, $query);
 
 if (!$result) {
@@ -36,6 +24,17 @@ while ($row = mysqli_fetch_assoc($result)) {
     $newsItems[] = $row;
 }
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_news'])) {
+    $news_id = intval($_POST['news_id']);
+    $delete_query = "DELETE FROM news WHERE id = $news_id AND user_id = $user_id";
+    if (mysqli_query($link, $delete_query)) {
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit();
+    } else {
+        die('خطا در حذف خبر: ' . mysqli_error($link));
+    }
+}
+
 mysqli_close($link);
 ?>
 
@@ -44,28 +43,24 @@ mysqli_close($link);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- style -->
     <link href="css/index.css" rel="stylesheet" type="text/css" media="screen">
-    <!-- bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <!-- google font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
-        rel="stylesheet">
-    <!-- jquery -->
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <title>اخبار <?php echo htmlspecialchars($category); ?></title>
+    <title>پنل کاربری</title>
 </head>
 <body>
     <div>
-        <!-- navbar -->
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
                 <li class="nav-item dropdown d-flex align-items-center">
-                    <i class="logo"><img src="images/5.png" alt="لوگو"></i>
+                    <a href="index.php" class="logo">
+                        <img src="images/5.png" alt="لوگو">
+                    </a>
                     <a class="nav-link dropdown-toggle m-1 fs-6" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                       اخبار
                     </a>
@@ -80,65 +75,64 @@ mysqli_close($link);
                     </ul>
                 </li>
                 <form class="d-flex align-items-center" role="search" action="index.php" method="get">
-                    <input class="form-control p-2" type="search" name="search" placeholder="جست و جو" aria-label="Search" style="height: 5vh;" value="<?php echo htmlspecialchars($search); ?>">
+                    <input class="form-control p-2" type="search" name="search" placeholder="جست و جو" aria-label="Search" style="height: 5vh;">
                     <button class="sbtn p-2 m-2" type="submit"><i class="bi bi-search"></i></button>
                 </form>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#"><i class="bi bi-person-plus"></i></a>
+                            <a class="nav-link active" aria-current="page" href="index.php"><i class="bi bi-house"></i> صفحه اصلی</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="login.php">ورود</a> <!-- لینک به صفحه ورود -->
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="registration.php">ثبت نام</a> <!-- لینک به صفحه ثبت نام -->
+                            <a class="nav-link" href="addnews.php"><i class="bi bi-plus-circle"></i> درج خبر</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
 
-        <!-- نمایش اخبار -->
         <div class="container mt-4">
-            <h2 class="title text-center mb-4">اخبار <?php echo htmlspecialchars($category); ?></h2>
+            <h2 class="text-center mb-4">اخبار منتشر شده توسط شما</h2>
             <div class="row">
                 <?php if (count($newsItems) > 0): ?>
                     <?php foreach ($newsItems as $newsItem): ?>
-                        <div class="col-md-4 mb-4 d-flex">
-                            <div class="card flex-fill d-flex flex-column">
-                                <img src="<?php echo htmlspecialchars($newsItem['image']); ?>" class="card-img-top flex-grow-1" alt="<?php echo htmlspecialchars($newsItem['title']); ?>">
-                                <div class="card-body d-flex flex-column">
-                                    <h5 class="title-news card-title"><?php echo htmlspecialchars($newsItem['title']); ?></h5>
-                                    <p class="card-text flex-grow-1"><?php echo nl2br(htmlspecialchars(substr($newsItem['content'], 0, 100) . '...')); ?></p>
-                                    <a href="shownews.php?id=<?php echo $newsItem['id']; ?>" class="show-news sbtn mt-auto">مشاهده کامل خبر</a>
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                <img src="<?php echo htmlspecialchars($newsItem['image']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($newsItem['title']); ?>">
+                                <div class="card-body">
+                                    <h5 class="card-title"><?php echo htmlspecialchars($newsItem['title']); ?></h5>
+                                    <p class="card-text"><?php echo nl2br(htmlspecialchars(substr($newsItem['content'], 0, 100) . '...')); ?></p>
+                                    <a href="edit_news.php?id=<?php echo $newsItem['id']; ?>" class="btn btn-warning">ویرایش خبر</a>
+                                    <form action="" method="post" style="display:inline;">
+                                        <input type="hidden" name="news_id" value="<?php echo $newsItem['id']; ?>">
+                                        <button type="submit" name="delete_news" class="btn btn-danger" onclick="return confirm('آیا مطمئن هستید که می‌خواهید این خبر را حذف کنید؟')">حذف خبر</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <div class="col-12">
-                        <p class="text-center">هیچ خبری در این دسته‌بندی یافت نشد.</p>
+                        <p class="text-center">شما هیچ خبری منتشر نکرده‌اید.</p>
                     </div>
                 <?php endif; ?>
             </div>
         </div>
 
-        <!-- footer -->
         <div class="footer w-100">
             <div class="container text-center">
-                <p class="footer-text">تمامی حقوق محفوظ است &copy; 2025</p>
+                <p class="footer-text">تمامی حقوق محفوظ است &copy; 2023</p>
                 <ul class="footer-links">
                     <li><a href="#">درباره ما</a></li>
                     <li><a href="#">تماس با ما</a></li>
                     <li><a href="#">حریم خصوصی</a></li>
                     <li><a href="#">شرایط و قوانین</a></li>
                 </ul>
-                <ul class="footer-links">
-                    <li><a href="#"><i class="bi bi-whatsapp"></i></a></li>
-                    <li><a href="#"><i class="bi bi-instagram"></i></a></li>
-                    <li><a href="#"><i class="bi bi-twitter-x"></i></a></li>
-                    <li><a href="#"><i class="bi bi-telegram"></i></a></li>
+                <ul>
+                    <i class="bi bi-whatsapp"></i>
+                    <i class="bi bi-instagram"></i>
+                    <i class="bi bi-twitter-x"></i>
+                    <i class="bi bi-telegram"></i>
                 </ul>
             </div>
         </div>

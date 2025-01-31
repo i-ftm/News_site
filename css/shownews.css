@@ -57,22 +57,28 @@ body{
 }
 
 /* show news */
-.title h2 {
+.title {
     color: #32222c;
-    text-transform: uppercase;
-    margin-left: 9%;
+    margin-right: 0 !important;
     margin-top: 80px;
+    text-align: left; 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    font-size: 23px;
+    font-weight: bolder;
 }
-.title h2::after {
-    content: "";
-    width: 90%;
+
+.title::after {
+    content: '';
+    flex: 1; 
     height: 3px;
-    display: inline-block;
     background: #87314e;
 }
+
 .news {
-    width: 100%; /* عرض کامل */
-    text-align: center; /* مرکز کردن متن */
+    width: 100%; 
+    padding: 0 20px; 
 }
 
 .news img {
