@@ -1,5 +1,5 @@
 .card{
-    background: linear-gradient(to bottom, rgb(80, 43, 50), rgba(64, 35, 41, 0.8)), url('../4.jpg');
+    background: linear-gradient(to bottom, rgb(80, 43, 50), rgba(64, 35, 41, 0.8)), url('../images/4.jpg');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -31,9 +31,19 @@ body {
 .card-body {
     text-align: right;
 }
-.btn {
+.btns{
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+}
+.btn{
+    display: block;
     margin-top: 10px;
-    background-color: rgb(135, 49, 78);
-    color: white;
-    width: 60%;
+    background-color: rgb(135, 49, 78) !important;
+    border-width: 3px !important;
+    color: white !important;
+    width: 80% !important;
+    margin-bottom: 10px !important;
+    height: 5vh !important;
+    
 }

@@ -108,19 +108,25 @@ body{
     justify-content: center;
 }
 /* footer */
-.footer{
+/* footer */
+.footer {
     background-color: black;
     color: white;
-    height: 27vh; 
-    position: relative;
-    bottom: 0;
-    margin-bottom: 0!important;
-    margin-top: auto; 
+    height: 27vh;
+    position: absolute; /* تغییر به absolute */
+    bottom: 0; /* قرارگیری در پایین صفحه */
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    margin-top: auto;
 }
+
 body {
     display: flex;
     flex-direction: column;
-    min-height: 100vh; 
+    min-height: 100vh;
+    position: relative; /* اضافه کردن position: relative به body */
+    padding-bottom: 27vh; /* اضافه کردن padding-bottom برای جلوگیری از هم‌پوشانی فوتر با محتوا */
 }
 .container {
     padding: 20px; 

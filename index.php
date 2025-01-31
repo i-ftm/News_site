@@ -1,3 +1,44 @@
+<?php
+// اتصال به پایگاه داده
+$link = mysqli_connect('localhost:3306', 'root', '', 'news');
+if (!$link) {
+    die('خطا در اتصال به پایگاه داده: ' . mysqli_connect_error());
+}
+
+// دریافت دسته‌بندی از URL
+$category = isset($_GET['category']) ? $_GET['category'] : 'همه'; // پیش‌فرض "همه" اخبار
+$category = mysqli_real_escape_string($link, $category); // جلوگیری از SQL Injection
+
+// دریافت عبارت جست‌وجو از URL
+$search = isset($_GET['search']) ? $_GET['search'] : ''; // پیش‌فرض خالی
+$search = mysqli_real_escape_string($link, $search); // جلوگیری از SQL Injection
+
+// کوئری برای دریافت اخبار بر اساس دسته‌بندی و share = 1
+if ($category === 'همه') {
+    $query = "SELECT * FROM news WHERE share = 1"; // همه اخبار با share = 1
+} else {
+    $query = "SELECT * FROM news WHERE category = '$category' AND share = 1"; // اخبار بر اساس دسته‌بندی و share = 1
+}
+
+// اگر عبارت جست‌وجو وجود داشت، کوئری را به‌روزرسانی کنید
+if (!empty($search)) {
+    $query .= " AND title LIKE '%$search%'"; // جست‌وجو در عنوان اخبار
+}
+
+$result = mysqli_query($link, $query);
+
+if (!$result) {
+    die('خطا در اجرای کوئری: ' . mysqli_error($link));
+}
+
+$newsItems = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $newsItems[] = $row;
+}
+
+mysqli_close($link);
+?>
+
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -16,267 +57,91 @@
         rel="stylesheet">
     <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <title>NEWS</title>
+    <title>اخبار <?php echo htmlspecialchars($category); ?></title>
 </head>
 <body>
-    <div class="page">
+    <div>
         <!-- navbar -->
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid ">
+            <div class="container-fluid">
                 <li class="nav-item dropdown d-flex align-items-center">
-                    <i class="logo"><img src="images/5.png" alt=""></i>
+                    <i class="logo"><img src="images/5.png" alt="لوگو"></i>
                     <a class="nav-link dropdown-toggle m-1 fs-6" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                       اخبار
                     </a>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">سیاسی</a></li>
+                      <li><a class="dropdown-item" href="index.php?category=همه">همه اخبار</a></li>
                       <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="#">ورزشی</a></li>
+                      <li><a class="dropdown-item" href="index.php?category=سیاسی">سیاسی</a></li>
                       <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="#">اقتصادی</a></li>
+                      <li><a class="dropdown-item" href="index.php?category=ورزشی">ورزشی</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="index.php?category=اقتصادی">اقتصادی</a></li>
                     </ul>
                 </li>
-                <form class="d-flex align-items-center" role="search">
-                    <input class="form-control p-2" type="search" placeholder="جست و جو" aria-label="Search" style="height: 5vh;">
+                <form class="d-flex align-items-center" role="search" action="index.php" method="get">
+                    <input class="form-control p-2" type="search" name="search" placeholder="جست و جو" aria-label="Search" style="height: 5vh;" value="<?php echo htmlspecialchars($search); ?>">
                     <button class="sbtn p-2 m-2" type="submit"><i class="bi bi-search"></i></button>
-                  </form>
-              <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#"><i class="bi bi-person-plus"></i></a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">ورود</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link "  href="#" >ثبت نام</a>
-                  </li>
-                </ul>
-              </div>
+                </form>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#"><i class="bi bi-person-plus"></i></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="login.php">ورود</a> <!-- لینک به صفحه ورود -->
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="registration.php">ثبت نام</a> <!-- لینک به صفحه ثبت نام -->
+                        </li>
+                    </ul>
+                </div>
             </div>
         </nav>
-        <!-- slider -->
-        <div class="m-2">
-          <div class="title">
-            <h2 class="fs-4 fw-bold">
-                اخبار ویژه
-            </h2>
-          </div>
-          <div id="carouselExampleCaptions" class="carousel slide mt-5">
-                <div class="carousel-indicators">
-                  <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                  <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                  <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                  <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3" aria-label="Slide 4"></button>
-                </div>
-                <div class="carousel-inner">
-                  <div class="carousel-item active">
-                    <div class="row">
-                      <div class="col-4"><img src="images/1.jpg" class="d-block w-100" alt="..."></div>
-                      <div class="col-8">
-                        <div class="mt-4 d-none d-md-block">
-                          <h2>First slide label</h2><br>
-                          <p>Some representative placeholder content for the first slide.Some representative placeholder content for the first slide.
-                            Some representative placeholder content for the first slide.Some representative placeholder content for the first slide.</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="carousel-item">
-                    <div class="row">
-                      <div class="col-4"><img src="images/2.jpg" class="d-block w-100" alt="..."></div>
-                      <div class="col-8">
-                        <div class="mt-4 d-none d-md-block">
-                          <h5>Second slide label</h5>
-                          <p>Some representative placeholder content for the second slide.</p>
-                        </div>
-                    </div>
-                    </div>
-                  </div>
-                  <div class="carousel-item">
-                    <div class="row">
-                      <div class="col-4"><img src="images/3.jpg" class="d-block w-100" alt="..."></div>
-                      <div class="col-8">
-                        <div class="mt-4 d-none d-md-block">
-                          <h5>Third slide label</h5>
-                          <p>Some representative placeholder content for the third slide.</p>
-                        </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="carousel-item">
-                  <div class="row">
-                    <div class="col-4"><img src="images/3.jpg" class="d-block w-100" alt="..."></div>
-                    <div class="col-8">
-                      <div class="mt-4 d-none d-md-block">
-                        <h5>Third slide label</h5>
-                        <p>Some representative placeholder content for the third slide.</p>
-                      </div>
-                  </div>
-                </div>
-              </div>
 
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Next</span>
-                </button>
-          </div>
-        </div>
-        <!-- news -->
-        <div class="title">
-          <h2 class="fs-4 fw-bolder">
-              اخبار
-          </h2>
-        </div>
-        <div>
-          <div class="news">
-            <div class="title-news">
-              <h2 class="fs-5 fw-bold">
-                  سیاسی
-              </h2>
+        <!-- نمایش اخبار -->
+        <div class="container mt-4">
+            <h2 class="text-center mb-4">اخبار <?php echo htmlspecialchars($category); ?></h2>
+            <div class="row">
+                <?php if (count($newsItems) > 0): ?>
+                    <?php foreach ($newsItems as $newsItem): ?>
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                <img src="<?php echo htmlspecialchars($newsItem['image']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($newsItem['title']); ?>">
+                                <div class="card-body">
+                                    <h5 class="card-title"><?php echo htmlspecialchars($newsItem['title']); ?></h5>
+                                    <p class="card-text"><?php echo nl2br(htmlspecialchars(substr($newsItem['content'], 0, 100) . '...')); ?></p>
+                                    <a href="shownews.php?id=<?php echo $newsItem['id']; ?>" class="btn btn-primary">مشاهده کامل خبر</a>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="col-12">
+                        <p class="text-center">هیچ خبری در این دسته‌بندی یافت نشد.</p>
+                    </div>
+                <?php endif; ?>
             </div>
-            <div class="option-imgs d-flex flex-wrap justify-content-evenly p-5" style="width: 100%;">
-              <div class="option-img col-12 col-xl-3 mt-5 mb-5">
-                  <img src="assets/images/4-1.jpg" alt="">
-                  <div class="option-disceription">
-                      <h4 class="pt-3 px-2 fs-2 fw-semibold">App 1</h4>
-                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2 text-truncate">Lorem ipsum, dolor sit amet consectetur</p>
-                      <a class="show-news" href="#">مشاهده خبر</a>
-                  </div>
-              </div>
-              <div class="option-img col-12 col-xl-3 mt-5 mb-5">
-                  <img src="assets/images/4-2.jpg" alt="">
-                  <div class="option-disceription">
-                      <h4 class="pt-3 px-2 fs-2 fw-semibold">Product 1</h4>
-                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2 text-truncate">Lorem ipsum, dolor sit amet consectetur</p>
-                      <a class="show-news" href="#">مشاهده خبر</a>
-                  </div>
-              </div>
-              <div class="option-img col-12 col-xl-3 mt-5 mb-5">
-                  <img src="assets/images/4-3.jpg" alt="">
-                  <div class="option-disceription">
-                      <h4 class="pt-3 px-2 fs-2 fw-semibold">Branding 1</h4>
-                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2 text-truncate">Lorem ipsum, dolor sit amet consectetur</p>
-                      <a class="show-news" href="#">مشاهده خبر</a>
-                  </div>
-              </div>
-              <div class="option-img col-12 col-xl-3 mt-5 mb-5">
-                  <img src="assets/images/4-4.jpg" alt="">
-                  <div class="option-disceription">
-                      <h4 class="pt-3 px-2 fs-2 fw-semibold">Books 1</h4>
-                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2 text-truncate">Lorem ipsum, dolor sit amet consectetur</p>
-                      <a class="show-news" href="#">مشاهده خبر</a>
-                  </div>
-              </div>
-            </div>
-          </div>
-          <div class="news">
-            <div class="title-news">
-              <h2 class="fs-5 fw-bold">
-                  اقتصادی
-              </h2>
-            </div>
-            <div class="option-imgs d-flex flex-wrap justify-content-evenly p-5" style="width: 100%;">
-              <div class="option-img col-12 col-xl-3 mt-5 mb-5">
-                  <img src="assets/images/4-1.jpg" alt="">
-                  <div class="option-disceription">
-                      <h4 class="pt-3 px-2 fs-2 fw-semibold">App 1</h4>
-                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2 text-truncate">Lorem ipsum, dolor sit amet consectetur</p>
-                      <a class="show-news" href="#">مشاهده خبر</a>
-                  </div>
-              </div>
-              <div class="option-img col-12 col-xl-3 mt-5 mb-5">
-                  <img src="assets/images/4-2.jpg" alt="">
-                  <div class="option-disceription">
-                      <h4 class="pt-3 px-2 fs-2 fw-semibold">Product 1</h4>
-                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2 text-truncate">Lorem ipsum, dolor sit amet consectetur</p>
-                      <a class="show-news" href="#">مشاهده خبر</a>
-                  </div>
-              </div>
-              <div class="option-img col-12 col-xl-3 mt-5 mb-5">
-                  <img src="assets/images/4-3.jpg" alt="">
-                  <div class="option-disceription">
-                      <h4 class="pt-3 px-2 fs-2 fw-semibold">Branding 1</h4>
-                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2 text-truncate">Lorem ipsum, dolor sit amet consectetur</p>
-                      <a class="show-news" href="#">مشاهده خبر</a>
-                  </div>
-              </div>
-              <div class="option-img col-12 col-xl-3 mt-5 mb-5">
-                  <img src="assets/images/4-4.jpg" alt="">
-                  <div class="option-disceription">
-                      <h4 class="pt-3 px-2 fs-2 fw-semibold">Books 1</h4>
-                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2 text-truncate">Lorem ipsum, dolor sit amet consectetur</p>
-                      <a class="show-news" href="#">مشاهده خبر</a>
-                  </div>
-              </div>
-            </div>
-          </div>
-          <div class="news">
-            <div class="title-news">
-              <h2 class="fs-5 fw-bold">
-                  ورزشی
-              </h2>
-            </div>
-            <div class="option-imgs d-flex flex-wrap justify-content-evenly p-5" style="width: 100%;">
-              <div class="option-img col-12 col-xl-3 mt-5 mb-5">
-                  <img src="assets/images/4-1.jpg" alt="">
-                  <div class="option-disceription">
-                      <h4 class="pt-3 px-2 fs-2 fw-semibold">App 1</h4>
-                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2 text-truncate">Lorem ipsum, dolor sit amet consectetur</p>
-                      <a class="show-news" href="#">مشاهده خبر</a>
-                  </div>
-              </div>
-              <div class="option-img col-12 col-xl-3 mt-5 mb-5">
-                  <img src="assets/images/4-2.jpg" alt="">
-                  <div class="option-disceription">
-                      <h4 class="pt-3 px-2 fs-2 fw-semibold">Product 1</h4>
-                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2 text-truncate">Lorem ipsum, dolor sit amet consectetur</p>
-                      <a class="show-news" href="#">مشاهده خبر</a>
-                  </div>
-              </div>
-              <div class="option-img col-12 col-xl-3 mt-5 mb-5">
-                  <img src="assets/images/4-3.jpg" alt="">
-                  <div class="option-disceription">
-                      <h4 class="pt-3 px-2 fs-2 fw-semibold">Branding 1</h4>
-                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2 text-truncate">Lorem ipsum, dolor sit amet consectetur</p>
-                      <a class="show-news" href="#">مشاهده خبر</a>
-                  </div>
-              </div>
-              <div class="option-img col-12 col-xl-3 mt-5 mb-5">
-                  <img src="assets/images/4-4.jpg" alt="">
-                  <div class="option-disceription">
-                      <h4 class="pt-3 px-2 fs-2 fw-semibold">Books 1</h4>
-                      <p class="pt-3 px-2 fs-5 fw-mibold text-uppercase mt-2 text-truncate">Lorem ipsum, dolor sit amet consectetur</p>
-                      <a class="show-news" href="#">مشاهده خبر</a>
-                  </div>
-              </div>
-            </div>
-          </div>
         </div>
 
-    </div>
-    <!-- footer -->
-    <div class="footer w-100">
-      <div class="container text-center">
-        <p class="footer-text">تمامی حقوق محفوظ است &copy; 2023</p>
-          <ul class="footer-links">
-            <li><a href="#">درباره ما</a></li>
-            <li><a href="#">تماس با ما</a></li>
-            <li><a href="#">حریم خصوصی</a></li>
-            <li><a href="#">شرایط و قوانین</a></li>
-          </ul>
-          <ul>
-            <i class="bi bi-whatsapp"></i>
-            <i class="bi bi-instagram"></i>
-            <i class="bi bi-twitter-x"></i>
-            <i class="bi bi-telegram"></i>
-        </ul>
-      </div>
+        <!-- footer -->
+        <div class="footer w-100">
+            <div class="container text-center">
+                <p class="footer-text">تمامی حقوق محفوظ است &copy; 2025</p>
+                <ul class="footer-links">
+                    <li><a href="#">درباره ما</a></li>
+                    <li><a href="#">تماس با ما</a></li>
+                    <li><a href="#">حریم خصوصی</a></li>
+                    <li><a href="#">شرایط و قوانین</a></li>
+                </ul>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="bi bi-whatsapp"></i></a></li>
+                    <li><a href="#"><i class="bi bi-instagram"></i></a></li>
+                    <li><a href="#"><i class="bi bi-twitter-x"></i></a></li>
+                    <li><a href="#"><i class="bi bi-telegram"></i></a></li>
+                </ul>
+            </div>
+        </div>
     </div>
 </body>
 </html>
