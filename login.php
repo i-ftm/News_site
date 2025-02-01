@@ -50,10 +50,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if (mysqli_num_rows($result) > 0) {
             $user = mysqli_fetch_assoc($result);
-            $_SESSION['user_id'] = $user['id']; // ذخیره شناسه کاربر در سشن
-            $_SESSION['isadmin'] = $user['isadmin']; // ذخیره وضعیت ادمین در سشن
+            $_SESSION['user_id'] = $user['id']; 
+            $_SESSION['isadmin'] = $user['isadmin']; 
 
-            // هدایت کاربر بر اساس مقدار isadmin
+            
             if ($user['isadmin'] == 1) {
                 header("Location: managment.php");
             } else {

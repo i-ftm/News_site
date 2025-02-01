@@ -118,8 +118,8 @@ mysqli_close($link);
             background-color: #6b2540;
         }
         .scrollable-section {
-            max-height: 400px; /* ارتفاع ثابت برای بخش اسکرول */
-            overflow-y: auto; /* فعال‌کردن اسکرول عمودی */
+            max-height: 400px; 
+            overflow-y: auto; 
             border: 1px solid #ddd;
             border-radius: 5px;
             padding: 10px;

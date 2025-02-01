@@ -1,19 +1,16 @@
 <?php
-// اتصال به پایگاه داده
 $link = mysqli_connect('localhost:3306', 'root', '', 'news');
 if (!$link) {
     die('خطا در اتصال به پایگاه داده: ' . mysqli_connect_error());
 }
 
-// دریافت شناسه خبر از URL
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// بررسی معتبر بودن شناسه
 if ($id <= 0) {
     die('شناسه خبر نامعتبر است.');
 }
 
-// خواندن خبر از جدول news و اطلاعات کاربر از جدول users
+
 $query = "
     SELECT n.*, u.name, u.family 
     FROM news n
@@ -33,8 +30,7 @@ if (mysqli_num_rows($result) == 0) {
 $newsItem = mysqli_fetch_assoc($result);
 mysqli_close($link);
 
-// تبدیل مسیر نسبی تصویر به URL کامل
-$baseUrl = "http://localhost/your-project-folder/"; // آدرس پایه پروژه
+$baseUrl = "http://localhost/your-project-folder/";
 $imagePath = $baseUrl . $newsItem['image'];
 ?>
 
@@ -90,10 +86,10 @@ $imagePath = $baseUrl . $newsItem['image'];
                             <a class="nav-link active" aria-current="page" href="#"><i class="bi bi-person-plus"></i></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="login.php">ورود</a> <!-- لینک به صفحه ورود -->
+                            <a class="nav-link" href="login.php">ورود</a> 
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="registration.php">ثبت نام</a> <!-- لینک به صفحه ثبت‌نام -->
+                            <a class="nav-link" href="registration.php">ثبت نام</a> 
                         </li>
                     </ul>
                 </div>

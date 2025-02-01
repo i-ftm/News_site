@@ -89,10 +89,10 @@ mysqli_close($link);
                             <a class="nav-link active" aria-current="page" href="#"><i class="bi bi-person-plus"></i></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="login.php">ورود</a> <!-- لینک به صفحه ورود -->
+                            <a class="nav-link" href="login.php">ورود</a> 
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="registration.php">ثبت نام</a> <!-- لینک به صفحه ثبت نام -->
+                            <a class="nav-link" href="registration.php">ثبت نام</a> 
                         </li>
                     </ul>
                 </div>

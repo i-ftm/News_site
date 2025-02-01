@@ -1,27 +1,23 @@
 <?php
-session_start(); // شروع session برای بررسی وضعیت ورود کاربر
+session_start();
 
-// بررسی آیا کاربر وارد سیستم شده است
 if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php'); // اگر کاربر وارد نشده باشد، به صفحه ورود هدایت شود
+    header('Location: login.php'); 
     exit();
 }
 
-// اتصال به پایگاه داده
+
 $link = mysqli_connect('localhost:3306', 'root', '', 'news');
 if (!$link) {
     die('خطا در اتصال به پایگاه داده: ' . mysqli_connect_error());
 }
 
-// دریافت شناسه خبر از URL
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// بررسی معتبر بودن شناسه
 if ($id <= 0) {
     die('شناسه خبر نامعتبر است.');
 }
 
-// خواندن خبر از جدول news
 $query = "SELECT * FROM news WHERE id = $id AND user_id = {$_SESSION['user_id']}";
 $result = mysqli_query($link, $query);
 
@@ -35,7 +31,6 @@ if (mysqli_num_rows($result) == 0) {
 
 $newsItem = mysqli_fetch_assoc($result);
 
-// پردازش فرم ویرایش
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = mysqli_real_escape_string($link, $_POST['title']);
     $content = mysqli_real_escape_string($link, $_POST['content']);
@@ -43,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $updateQuery = "UPDATE news SET title = '$title', content = '$content', image = '$image' WHERE id = $id";
     if (mysqli_query($link, $updateQuery)) {
-        header('Location: user.php'); // پس از ویرایش، به صفحه کاربر هدایت شود
+        header('Location: user.php'); 
         exit();
     } else {
         die('خطا در ویرایش خبر: ' . mysqli_error($link));
@@ -105,7 +100,7 @@ mysqli_close($link);
                             <a class="nav-link active" aria-current="page" href="index.php"><i class="bi bi-house"></i> صفحه اصلی</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="logout.php">خروج</a> <!-- لینک خروج -->
+                            <a class="nav-link" href="user.php">خروج</a>
                         </li>
                     </ul>
                 </div>

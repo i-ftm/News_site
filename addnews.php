@@ -17,29 +17,29 @@ function request($field) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $title = request('title'); // عنوان خبر
-    $content = request('newstext'); // متن خبر
-    $category = request('category'); // دسته‌بندی خبر
-    $user_id = $_SESSION['user_id']; // شناسه کاربر از سشن
+    $title = request('title'); 
+    $content = request('newstext'); 
+    $category = request('category');
+    $user_id = $_SESSION['user_id']; 
 
-    // مسیر برای بارگذاری تصویر
-    $uploadDir = __DIR__ . '/uploads/'; // استفاده از مسیر کامل
+    
+    $uploadDir = __DIR__ . '/uploads/'; 
     $imageName = basename($_FILES['image']['name']);
     $uploadPath = $uploadDir . $imageName;
 
-    // بررسی وجود دایرکتوری uploads و ایجاد آن در صورت عدم وجود
+    
     if (!is_dir($uploadDir)) {
         if (!mkdir($uploadDir, 0755, true)) {
-            die('Unable to create the directory ' . $uploadDir); // خطا در ایجاد دایرکتوری
+            die('Unable to create the directory ' . $uploadDir);
         }
     }
 
-    // بارگذاری تصویر
+  
     if (empty($_FILES['image']['name'])) {
         $errors['image'] = 'لطفاً یک تصویر انتخاب کنید.';
     } else {
-        // بررسی نوع فایل و اجازه بارگذاری فقط برای تصاویر
-        $allowedTypes = ['jpg', 'jpeg', 'png', 'gif']; // فرمت‌های مجاز
+        
+        $allowedTypes = ['jpg', 'jpeg', 'png', 'gif']; 
         $fileType = strtolower(pathinfo($uploadPath, PATHINFO_EXTENSION));
 
         if (!in_array($fileType, $allowedTypes)) {
@@ -51,21 +51,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    // بررسی خطاها و پر بودن فیلدها
+    
     if (empty($title) || empty($content) || empty($category) || !empty($errors)) {
         echo 'لطفاً تمامی فیلدها را پر کنید و خطاها را برطرف کنید.';
     } else {
-        // اتصال به پایگاه داده
+        
         $link = mysqli_connect('localhost:3306', 'root', '', 'news');
         if (!$link) {
             echo 'could not connect : ' . mysqli_connect_error();
             exit;
         }
 
-        // ذخیره مسیر نسبی تصویر در دیتابیس
+        
         $relativePath = 'uploads/' . $imageName;
 
-        // ذخیره خبر و اطلاعات کاربر
+        
         $statement = mysqli_prepare($link, "INSERT INTO news (title, image, newstext, user_id, category) VALUES (?, ?, ?, ?, ?)");
         mysqli_stmt_bind_param($statement, 'sssis', $title, $relativePath, $content, $user_id, $category);
 
